@@ -24,6 +24,86 @@ class C_homeAdmin extends CI_Controller{
         $data['judul'] = 'Detail Survei';
         $data['a'] = $a;
         $data['survei'] = $this->Proper_model->getSurveiById($a);
+
+        $tmpres = $this->Proper_model->getResponseByKodeSurvei($data['survei'][0]['kode_survei']);
+        $data['curr_resp'] = count($tmpres);
+        // var_dump($tmpsrv);
+        // var_dump($tmpres);
+
+        $tmpnilai = [
+            '1' => 0,
+            '2' => 0,
+            '3' => 0,
+            '4' => 0,
+            '5' => 0,
+            '6' => 0,
+            '7' => 0,
+            '8' => 0,
+            '9' => 0,
+            '10' => 0
+        ];
+
+        foreach ($tmpres as $srv) {
+            $tmpnilai['1'] += $srv['nilai1'];
+            $tmpnilai['2'] += $srv['nilai2'];
+            $tmpnilai['3'] += $srv['nilai3'];
+            $tmpnilai['4'] += $srv['nilai4'];
+            $tmpnilai['5'] += $srv['nilai5'];
+            $tmpnilai['6'] += $srv['nilai6'];
+            $tmpnilai['7'] += $srv['nilai7'];
+            $tmpnilai['8'] += $srv['nilai8'];
+            $tmpnilai['9'] += $srv['nilai9'];
+            $tmpnilai['10'] += $srv['nilai10'];
+        }
+
+        for ($i = 1; $i <= 10; $i++) {
+            $tmpnilai[$i] = $tmpnilai[$i] / count($tmpres);
+        }
+
+        // var_dump($tmpnilai);
+
+        $best = 0;
+
+        for ($i = 1; $i <= 10; $i++) {
+            if ($tmpnilai[$i] > $best) {
+                $best = $tmpnilai[$i];
+                switch ($i) {
+                    case 1:
+                        $data['best'] = 18;
+                        break;
+                    case 2:
+                        $data['best'] = 24;
+                        break;
+                    case 3:
+                        $data['best'] = 30;
+                        break;
+                    case 4:
+                        $data['best'] = 36;
+                        break;
+                    case 5:
+                        $data['best'] = 48;
+                        break;
+                    case 6:
+                        $data['best'] = 60;
+                        break;
+                    case 7:
+                        $data['best'] = 72;
+                        break;
+                    case 8:
+                        $data['best'] = 84;
+                        break;
+                    case 9:
+                        $data['best'] = 96;
+                        break;
+                    case 10:
+                        $data['best'] = 120;
+                        break;
+                }
+            }
+        }
+
+        $this->Proper_model->updateSurveiStatus($data['survei'][0]['id_survei'], $data['curr_resp']);
+
         $this->load->view('templates/header', $data);
         $this->load->view('v_detailHasil', $data);
         $this->load->view('templates/footer');

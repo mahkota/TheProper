@@ -11,12 +11,23 @@
 			<h5><?php echo "Kode Ruangan : ", $sv['kode_ruang'] ?></h5>
 			<h5><?php echo "Nama Ruangan : ", $sv['nama_ruang'] ?></h5>
 			<h5><?php echo "Nama Instansi : ", $sv['nama_instansi'] ?></h5>
-			<h5><?php echo "Jumlah Responden : ", $sv['jumlah_responden'] ?></h5>
+			<h5><?php echo "Jumlah Responden : ", $curr_resp, "/",$sv['jumlah_responden'] ?></h5>
 			<h5><?php echo "Waktu Pengambilan Survei : ", $sv['waktu_survei'] ?></h5>
+			<h5>
+                Status : 
+                <?php
+                    if ($sv['status'] == 0) {
+                        echo("Kuota responden belum terpenuhi.");
+                    }
+                    else {
+                        echo("Kuota responden terpenuhi.");
+                    }
+                ?>
+            </h5>
 		</div>
 		<br><br>
 		<div class="text-center">
-			<h3>Ukuran font terbaik: <b>x pt</b>.</h3>
+			<h3>Ukuran font terbaik: <b><?= $best ?> pt</b>.</h3>
 			<?php endforeach; ?>
 			<br>
 			<a class="btn btn-outline-dark" href="<?php echo site_url('C_homeAdmin/showHasil'); ?>"
